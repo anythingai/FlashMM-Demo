@@ -4,11 +4,18 @@ import { CONFIG } from "@/lib/config";
 
 type Coin = { denom: string; amount: string };
 
+interface KeplrWindow {
+  keplr?: {
+    experimentalSuggestChain?: (chainInfo: unknown) => Promise<void>;
+  };
+}
+
 export async function suggestChainKeplr(): Promise<boolean> {
-  if (!(window as any)?.keplr?.experimentalSuggestChain) return false;
+  const windowKeplr = window as unknown as KeplrWindow;
+  if (!windowKeplr?.keplr?.experimentalSuggestChain) return false;
   try {
     // Minimal suggest; projects should supply full fee currencies & chain params.
-    await (window as any).keplr.experimentalSuggestChain({
+    await windowKeplr.keplr.experimentalSuggestChain({
       chainId: CONFIG.CHAIN_ID,
       chainName: CONFIG.NETWORK_NAME,
       rpc: CONFIG.RPC_URL,

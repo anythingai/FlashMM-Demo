@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     // keep reasonable cap
     if (store.length > 500) store.shift();
     return NextResponse.json({ ok: true, ack: item });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ ok: false, error: "Bad JSON" }, { status: 400 });
   }
 }

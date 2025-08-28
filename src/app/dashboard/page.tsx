@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useSessionState } from "@/hooks/use-session-state";
 import { AgentStatus } from "@/components/agent/agent-status";
 import { CONFIG } from "@/lib/config";
-import { getLatestBlockHeight, pingLatency, getBalances, formatAmount } from "@/lib/chain";
+import { pingLatency } from "@/lib/chain";
 import { useWalletSession } from "@/hooks/use-wallet-session";
 
 // ---- Types ----
@@ -44,7 +44,7 @@ export default function DashboardPage() {
   const [trades, setTrades] = React.useState<Trade[]>([]);
   const [latencyMs, setLatencyMs] = React.useState(120);
   const [confidence, setConfidence] = React.useState(0.55);
-  const [predictedDelta, setPredictedDelta] = React.useState(0);
+  const [, setPredictedDelta] = React.useState(0);
   const [position, setPosition] = React.useState(0);
   const [cash, setCash] = React.useState(0);
   const [zScore, setZScore] = React.useState(0);
@@ -53,7 +53,7 @@ export default function DashboardPage() {
   // Wallet/Chain telemetry
   const { address, walletName } = useWalletSession();
   const [walletBalance, setWalletBalance] = React.useState<string>("0");
-  const [blockHeight, setBlockHeight] = React.useState<number | null>(null);
+  const [, setBlockHeight] = React.useState<number | null>(null);
   const [rpcMs, setRpcMs] = React.useState<number | null>(null);
 
   // Presenter-driven userflow steps (clickable)
@@ -93,7 +93,7 @@ export default function DashboardPage() {
 
   // Chain telemetry polling when telemetry is enabled
   React.useEffect(() => {
-    let pollId: any;
+    let pollId: NodeJS.Timeout;
     if (telemetryOn) {
       const runTelemetry = async () => {
         try {
@@ -254,7 +254,7 @@ export default function DashboardPage() {
     return () => {
       if (tickHandle.current) clearInterval(tickHandle.current);
     };
-  }, [paused, market, position, ingesting, predicting, quoting, routerBound, failsafeArmed]);
+  }, [paused, market, position, ingesting, predicting, quoting, routerBound, failsafeArmed, setPaused]);
 
   // Poll recent snapshots from router API when telemetry is enabled
   React.useEffect(() => {

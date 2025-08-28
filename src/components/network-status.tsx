@@ -9,7 +9,6 @@ export function NetworkStatus() {
   const [height, setHeight] = React.useState<number | null>(null);
 
   React.useEffect(() => {
-    let id: any;
     const run = async () => {
       try {
         // Use local health endpoint instead of external REST API
@@ -29,7 +28,7 @@ export function NetworkStatus() {
       }
     };
     run();
-    id = setInterval(run, 5000);
+    const id: NodeJS.Timeout = setInterval(run, 5000);
     return () => clearInterval(id);
   }, []);
 

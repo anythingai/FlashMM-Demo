@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -41,7 +42,7 @@ export default function RootLayout({
                 <span className="text-xs text-muted-foreground ml-2">{CONFIG.NETWORK_NAME}</span>
               </div>
               <nav className="flex items-center gap-3">
-                <a className="text-sm text-muted-foreground hover:text-foreground" href="/">Home</a>
+                <Link className="text-sm text-muted-foreground hover:text-foreground" href="/">Home</Link>
                 <a className="text-sm text-muted-foreground hover:text-foreground" href="/dashboard">Dashboard</a>
                 <a className="text-sm text-muted-foreground hover:text-foreground" href={CONFIG.FAUCET_URL} target="_blank" rel="noreferrer">Faucet</a>
                 <a className="text-sm text-muted-foreground hover:text-foreground" href={CONFIG.EXPLORER_URL} target="_blank" rel="noreferrer">Explorer</a>

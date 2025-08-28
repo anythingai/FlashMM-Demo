@@ -8,11 +8,24 @@ import { CONFIG } from "@/lib/config";
 import { suggestChainKeplr } from "@/lib/chain";
 import { toast } from "sonner";
 
+interface KeplrWallet {
+  enable: (chainId: string) => Promise<void>;
+  experimentalSuggestChain?: (chainInfo: unknown) => Promise<void>;
+}
+
+interface LeapWallet {
+  enable?: (chainId: string) => Promise<void>;
+}
+
+interface OfflineSigner {
+  getAccounts: () => Promise<Array<{ address: string }>>;
+}
+
 declare global {
   interface Window {
-    keplr?: any;
-    leap?: any;
-    getOfflineSigner?: (chainId: string) => any;
+    keplr?: KeplrWallet;
+    leap?: LeapWallet;
+    getOfflineSigner?: (chainId: string) => OfflineSigner;
   }
 }
 
@@ -75,9 +88,10 @@ export function WalletButton() {
       } else {
         throw new Error("No compatible wallet detected (Keplr/Leap).");
       }
-    } catch (e: any) {
-      console.error(e);
-      toast.error(e?.message ?? "Wallet connection failed");
+    } catch (error) {
+      console.error(error);
+      const message = error instanceof Error ? error.message : "Wallet connection failed";
+      toast.error(message);
     } finally {
       setConnecting(false);
     }
